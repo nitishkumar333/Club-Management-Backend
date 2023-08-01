@@ -26,9 +26,12 @@ const userSchema = new Schema(
     members:[{
         type: Schema.Types.ObjectId,
         ref: 'Members'
-    }]
-  },
-  { timestamps: true }
+    }],
+    events:[{
+      type: Schema.Types.ObjectId,
+      ref: 'Events'
+  }]
+  }
 );
 
 module.exports = mongoose.model("Users", userSchema);

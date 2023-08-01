@@ -9,6 +9,7 @@ const multer = require("multer");
 const feedRoutes = require("./routes/feed");
 const authRoutes = require("./routes/auth");
 const membersRoutes = require("./routes/members");
+const eventsRoutes = require("./routes/events");
 
 const app = express();
 
@@ -25,7 +26,8 @@ const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "image/png" ||
     file.mimetype === "image/jpg" ||
-    file.mimetype === "image/jpeg"
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "application/pdf"
   ) {
     cb(null, true);
   } else {
@@ -33,12 +35,22 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+const fileUploadMiddleware =  multer({ storage: fileStorage, fileFilter: fileFilter }).fields([
+  { name: "file", maxCount: 1 },
+  { name: "report", maxCount: 1 },  
+])
+
 // app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
 app.use(bodyParser.json()); // application/json
-app.use(
-  multer({ storage: fileStorage, fileFilter: fileFilter }).single("file")
-);
+// app.use(
+//   multer({ storage: fileStorage, fileFilter: fileFilter }).fields([
+//     { name: "file", maxCount: 1 },
+//     { name: "report", maxCount: 1 },  
+//   ])
+// );
+
 app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/reports", express.static(path.join(__dirname, "reports")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -53,6 +65,7 @@ app.use((req, res, next) => {
 app.use("/home", feedRoutes);
 app.use("/auth", authRoutes);
 app.use(membersRoutes);
+app.use(eventsRoutes);
 
 app.use((error, req, res, next) => {
   console.log(error);

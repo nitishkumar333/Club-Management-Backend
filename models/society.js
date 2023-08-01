@@ -27,6 +27,10 @@ const societySchema = new Schema(
     members:[{
       type: Schema.Types.ObjectId,
       ref: 'Members'
+  }],
+    events:[{
+      type: Schema.Types.ObjectId,
+      ref: 'Events'
   }]
   }
 );

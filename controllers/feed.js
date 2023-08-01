@@ -22,21 +22,29 @@ exports.getSocieties = (req, res, next) => {
     });
 };
 
+exports.getSocietiesCount = (req, res, next) => {
+  Society.countDocuments()
+    .then((result) => {
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 exports.createSociety = (req, res, next) => {
   const errors = validationResult(req);
-  console.log("username-->>>>", req.body.society);
-  console.log("filepath-->>>>", req.file.path);
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed, entered data is incorrect.");
     error.statusCode = 422;
     throw error;
   }
-  if (!req.file) {
+  if (!req.files && !req.files.file) {
     const error = new Error("No image provided.");
     error.statusCode = 422;
     throw error;
   }
-  const imageUrl = req.file.path;
+  const imageUrl = req.files.file[0].path;
   const societyName = req.body.society;
   const department = req.body.department;
   const tagline = req.body.tagline;
@@ -98,8 +106,8 @@ exports.updateSociety = (req, res, next) => {
   const department = req.body.department;
   const tagline = req.body.tagline;
   let imageUrl = req.body.file;
-  if (req.file) {
-    imageUrl = req.file.path;
+  if (req.files.file) {
+    imageUrl = req.files.file[0].path;
   }
   if (!imageUrl) {
     const error = new Error("No file found!!");

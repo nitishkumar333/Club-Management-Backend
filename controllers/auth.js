@@ -2,6 +2,7 @@ const User = require("../models/users.js");
 const { validationResult } = require("express-validator/check");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Users = require("../models/users.js");
 
 exports.signup = (req, res, next) => {
   const errors = validationResult(req);
@@ -71,5 +72,15 @@ exports.login = (req, res, next) => {
         err.statusCode = 500;
       }
       next(err);
+    });
+};
+
+exports.getUsersCount = (req, res, next) => {
+  Users.countDocuments()
+    .then((result) => {
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };
