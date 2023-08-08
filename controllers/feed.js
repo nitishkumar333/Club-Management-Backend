@@ -5,6 +5,7 @@ const path = require("path");
 const Members = require("../models/members.js");
 const Society = require("../models/society");
 const User = require("../models/users.js");
+const Events = require("../models/events.js");
 
 exports.getSocieties = (req, res, next) => {
   Society.find({ creator: req.userId })
@@ -24,6 +25,26 @@ exports.getSocieties = (req, res, next) => {
 
 exports.getSocietiesCount = (req, res, next) => {
   Society.countDocuments()
+    .then((result) => {
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+exports.getBarGraphData = (req, res, next) => {
+  Society.find().select("department events -_id")
+    .then((result) => {
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+exports.getAreaGraphData = (req, res, next) => {
+  Events.find().select("date -_id")
     .then((result) => {
       res.status(201).json(result);
     })
@@ -166,12 +187,15 @@ exports.deleteSociety = (req, res, next) => {
     })
     .then((result) => {
       membersIds = result.members;
-      return Members.find({ofSociety:societyId}).select({imageUrl:1, _id:0});
+      return Members.find({ ofSociety: societyId }).select({
+        imageUrl: 1,
+        _id: 0,
+      });
     })
-    .then((result)=>{
-      result.map((obj)=>{
+    .then((result) => {
+      result.map((obj) => {
         clearImage(obj.imageUrl);
-      })
+      });
       return Members.deleteMany({ ofSociety: societyId });
     })
     .then((result) => {

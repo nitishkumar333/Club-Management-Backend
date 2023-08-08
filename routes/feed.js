@@ -12,6 +12,10 @@ router.get("/societies", isAuth, feedController.getSocieties);
 
 router.get("/all/societies/count", isAuth, feedController.getSocietiesCount);
 
+router.get("/all/bargraph", feedController.getBarGraphData);
+
+router.get("/all/areagraph", feedController.getAreaGraphData);
+
 // POST /feed/post
 router.post(
   "/society",
