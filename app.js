@@ -1,5 +1,8 @@
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
+require("dotenv").config();
+const MONGO_URI = process.env.MONGO_URI;
+const PORT = process.env.PORT;
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -76,11 +79,9 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(
-    "mongodb+srv://nitish333:ritik1920@cluster0.spya7d3.mongodb.net/backend?retryWrites=true&w=majority"
-  )
+  .connect(`${MONGO_URI}`)
   .then((result) => {
     console.log("connected");
-    app.listen(8080);
+    app.listen(PORT);
   })
   .catch((err) => console.log(err));

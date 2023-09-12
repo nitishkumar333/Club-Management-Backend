@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Users = require("../models/users.js");
 
+const SERECT_KEY = process.env.SERECT_KEY;
+
 exports.signup = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -62,7 +64,7 @@ exports.login = (req, res, next) => {
           email: loadedUser.email,
           userId: loadedUser._id.toString(),
         },
-        "serectKey"
+        `${SERECT_KEY}`
       );
       return res
         .status(200)
