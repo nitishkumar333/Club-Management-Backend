@@ -10,7 +10,7 @@ const router = express.Router();
 // GET /feed/posts
 router.get("/societies", isAuth, feedController.getSocieties);
 
-router.get("/all/societies/count", isAuth, feedController.getSocietiesCount);
+router.get("/all/societies/count", feedController.getSocietiesCount);
 
 router.get("/all/bargraph", feedController.getBarGraphData);
 

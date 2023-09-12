@@ -8,12 +8,21 @@ const Society = require("../models/society");
 
 exports.getMembers = (req, res, next) => {
   const societyId = req.params.societyId;
-  Members.find({ ofSociety: societyId, creator: req.userId })
-    .then((members) => {
-      res.status(200).json({
-        message: "Fetched societies successfully.",
-        members: members,
-      });
+  let societyName;
+  Society.findOne({_id:societyId})
+  .then((result)=>{
+    societyName = result.society;
+    if(!societyName){
+      throw new Error("Failed to fetch !!");
+    }
+    Members.find({ ofSociety: societyId, creator: req.userId })
+      .then((members) => {
+        res.status(200).json({
+          message: "Fetched societies successfully.",
+          members: members,
+          societyName: societyName
+        });
+      })
     })
     .catch((err) => {
       if (!err.statusCode) {

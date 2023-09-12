@@ -27,6 +27,6 @@ router.put(
 
 router.post("/login", authController.login);
 
-router.get("/all/users/count", isAuth, authController.getUsersCount);
+router.get("/all/users/count", authController.getUsersCount);
 
 module.exports = router;

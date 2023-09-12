@@ -37,8 +37,7 @@ const membersSchema = new Schema(
       ref: "Societies",
       required: true,
     },
-  },
-  { timestamps: { createdAt: true, updatedAt: false } }
+  }
 );
 
 module.exports = mongoose.model("Members", membersSchema);

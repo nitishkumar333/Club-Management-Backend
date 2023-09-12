@@ -34,7 +34,7 @@ exports.getSocietiesCount = (req, res, next) => {
 };
 
 exports.getBarGraphData = (req, res, next) => {
-  Society.find().select("department events -_id")
+  Events.find().select("department -_id")
     .then((result) => {
       res.status(201).json(result);
     })

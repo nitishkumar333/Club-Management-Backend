@@ -15,9 +15,53 @@ exports.getEventsCount = (req, res, next) => {
     });
 };
 
+exports.getEventDetails = (req, res, next) => {
+  const eventId = req.params.eventId;
+  Events.findOne({_id: eventId})
+  .then((result) => {
+      console.log(result)
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 exports.getUpcomingEvents = (req, res, next) => {
   const societyId = req.params.societyId;
   Events.find({ ofSociety: societyId, creator: req.userId, type: "UPCOMING" })
+    .then((events) => {
+      res.status(200).json({
+        message: "Fetched events successfully.",
+        events: events,
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+exports.getAllUpcomingEvents = (req, res, next) => {
+  Events.find({ type: "UPCOMING" }).sort({ date: -1 })
+    .then((events) => {
+      res.status(200).json({
+        message: "Fetched events successfully.",
+        events: events,
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+exports.getAllPastEvents = (req, res, next) => {
+  Events.find({ type: "COMPLETED" }).sort({ date: -1 })
     .then((events) => {
       res.status(200).json({
         message: "Fetched events successfully.",

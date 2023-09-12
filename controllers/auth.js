@@ -45,16 +45,17 @@ exports.login = (req, res, next) => {
       if (!user) {
         const error = new Error("Invalid Email!");
         error.statusCode = 401;
-        return error;
+        throw error;
       }
       loadedUser = user;
       return bcrypt.compare(password, user.password);
     })
     .then((isEqual) => {
+      console.log(isEqual)
       if (!isEqual) {
         const error = new Error("Wrong Password!");
         error.statusCode = 401;
-        return error;
+        throw error;
       }
       const token = jwt.sign(
         {
@@ -68,6 +69,7 @@ exports.login = (req, res, next) => {
         .json({ token: token, userId: loadedUser._id.toString() });
     })
     .catch((err) => {
+      console.log(err)
       if (!err.statusCode) {
         err.statusCode = 500;
       }

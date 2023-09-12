@@ -10,7 +10,14 @@ router.get("/events/upcomingEvents/:societyId", isAuth, eventsController.getUpco
 
 router.get("/events/pastEvents/:societyId", isAuth, eventsController.getPastEvents);
 
-router.get("/all/events/count", isAuth, eventsController.getEventsCount);
+router.get("/events/:eventId", eventsController.getEventDetails);
+
+router.get("/all/events/count", eventsController.getEventsCount);
+
+router.get("/all/upcomingEvents", eventsController.getAllUpcomingEvents);
+
+router.get("/all/pastEvents", eventsController.getAllPastEvents);
+
 
 router.delete("/events/:societyId/:eventId", isAuth, eventsController.deleteEvent);
 

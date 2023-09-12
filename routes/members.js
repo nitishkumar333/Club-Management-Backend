@@ -12,7 +12,7 @@ router.delete("/societies/:societyId/:memId", isAuth, membersController.deleteMe
 
 router.get("/members/:memId", isAuth, membersController.getMember);
 
-router.get("/all/members/count", isAuth, membersController.getMembersCount);
+router.get("/all/members/count", membersController.getMembersCount);
 
 router.put("/members/:memId", isAuth, fileUpload, 
 [
